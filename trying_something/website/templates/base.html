@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='general.css') }}">
+
+    <title>{% block title %}Home{% endblock %}</title>
+
+</head>
+<body>
+    <div class="fixed-navbar">
+        {% if current_user.is_authenticated %}
+          <a class="nav-item nav-link" id="home" href="/">Home</a>
+          <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+          <a class="nav-item nav-link" id="phone-number">Phone: {{ current_user.phno }}</a>
+          {% else %}
+          <a class="nav-item nav-link" id="login" href="/login">Login</a>
+          <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
+          {% endif %}
+        
+    </div>
+      
+    <div class="top-bar">
+        
+        <div class="left-section">
+            <img class="logo" src="{{ url_for('static', filename='icons/download.png') }}">
+        </div>
+        <div class="middle-section">
+            <input class="search-bar" type="search" placeholder="What can we help you find today?">
+            <button class="search-button">Search</button>
+        </div>
+        <div class="right-section">
+            <img class="cart" src="{{ url_for('static', filename='icons/cart.png') }}">
+            <img class="notificaton" src="{{ url_for('static', filename='icons/notifications.svg') }}">
+            <img class="account" src="{{ url_for('static', filename='icons/account.png') }}">
+            <div class="orders-text"> Orders </div>
+        </div>
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    {% for category, message in messages %}
+        <div class="alert {% if category == 'error' %}error{% else %}success{% endif %}">
+            {{message}}
+        </div>
+    {% endfor %}
+{% endif %}
+{% endwith %}
+
+    <div class="container">{% block content %} {% endblock %}</div>
+
+    
+    
+</body>
+</html>
